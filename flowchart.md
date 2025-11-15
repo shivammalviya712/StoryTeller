@@ -17,5 +17,18 @@ flowchart LR
 
         %% 3) Decide: ready or needs revision
         FB --> DEC{is_ready scores above threshold}
+        DEC -->|yes| FINAL_PASS[final_story = draft_story]
+        DEC -->|no| AP[Node: apply_feedback]
+
+        %% 4) Revise story if needed
+        AP -->|user_request + draft_story + edit_instructions| STR[StoryTeller.revise_story]
+        STR -->|revised_story| FINAL_REV[final_story]
+
+    end
+
+    %% Output to user
+    FINAL_PASS --> OUT[Return final_story + StoryFeedback to user]
+    FINAL_REV --> OUT
+
 
 ```
