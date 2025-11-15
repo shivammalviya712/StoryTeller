@@ -67,10 +67,10 @@ flowchart LR
 
         %% 2) Judge story
         EV -->|user_request + draft_story| J[StoryJudge.review]
-        J -->|StoryFeedback (scores, issues, edit_instructions)| FB[judge_feedback]
+        J -->|StoryFeedback scores issues edit_instructions| FB[judge_feedback]
 
         %% 3) Decide: ready or needs revision
-        FB --> DEC{StoryJudge.is_ready\n(all scores >= threshold)}
+        FB --> DEC{is_ready scores above threshold}
         DEC -->|yes| FINAL_PASS[final_story = draft_story]
         DEC -->|no| AP[Node: apply_feedback]
 
@@ -81,11 +81,9 @@ flowchart LR
     end
 
     %% Output to user
-    FINAL_PASS --> OUT[Print final_story + StoryFeedback]
+    FINAL_PASS --> OUT[Return final_story + StoryFeedback to user]
     FINAL_REV --> OUT
 
-    %% Optional tracing
-    G -. callbacks .-> L[Langfuse (optional)]
 ```
 
 ---
